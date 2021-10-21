@@ -298,7 +298,7 @@ name: String
 gender: String
 ```
 
-### GET /casts
+### GET /directors
 ```
 {
   "code": 200,
@@ -313,7 +313,7 @@ gender: String
 }
 ```
 
-### GET /casts/:id
+### GET /directors/:id
 ```
 {
   "code": 200,
@@ -326,7 +326,7 @@ gender: String
 }
 ```
 
-### POST /casts
+### POST /directors
 Body:
 ```
 {
@@ -348,7 +348,7 @@ Output:
 }
 ```
 
-### PUT /casts/:id
+### PUT /directors/:id
 Body:
 ```
 {
@@ -370,7 +370,7 @@ Output:
 }
 ```
 
-### DELETE /casts/:id
+### DELETE /directors/:id
 ```
 {
     "message": "deleted"
