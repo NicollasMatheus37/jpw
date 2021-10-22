@@ -7,9 +7,9 @@ exports.get = (req, res) => {
 
     db.all(sql, params, (err, rows) => {
         if (err) {
-            return res.status(500).json({
+            return res.json({
                 "code": 500,
-                "error": res.message
+                "error": err
             })
         }
         res.json({
@@ -26,9 +26,9 @@ exports.find = (req, res) => {
 
     db.get(sql, params, (err, row) => {
         if (err) {
-            return res.status(500).json({
+            return res.json({
                 "code": 500,
-                "error": res.message
+                "error": err
             })
         }
         res.json({
@@ -43,23 +43,23 @@ exports.post = (req, res) => {
     let userModel = (new UserModel()).createFromReq(req);
 
     if (userModel.errors?.length) {
-        return res.status(500).json({ "error": errors.join(",") });
+        return res.json({ "error": errors.join(",") });
     }
 
     const sql = 'INSERT INTO users (name, email, password) VALUES (?,?,?)';
 
     db.run(sql, userModel.prepareToSave(), (err, result) => {
         if (err) {
-            return res.status(500).json({
+            return res.json({
                 "code": 500,
-                "error": res.message
+                "error": err
             })
         }
 
         res.json({
             "code": 200,
             "message": "success",
-            "data": data,
+            "data": result,
             "id": this.lastID
         });
     });
@@ -69,7 +69,7 @@ exports.update = (req, res) => {
     let userModel = (new UserModel()).createFromReq(req);
 
     if (userModel.errors?.length) {
-        return res.status(500).json({ "error": errors.join(",") });
+        return res.json({ "error": errors.join(",") });
     }
 
     const sql = `UPDATE users set
@@ -80,15 +80,15 @@ exports.update = (req, res) => {
 
     db.run(sql, userModel.prepareToSave(), (err, result) => {
         if (err) {
-            return res.status(500).json({
+            return res.json({
                 "code": 500,
-                "error": res.message
+                "error": err
             })
         }
         res.json({
             "code": 200,
             message: "success",
-            data: data,
+            data: result,
             changes: this.changes
         })
     });
@@ -99,9 +99,9 @@ exports.delete = (req, res) => {
 
     db.run(sql, req.params.id, (err, result) => {
         if (err) {
-            return res.status(500).json({
+            return res.json({
                 "code": 500,
-                "error": res.message
+                "error": err
             })
         }
         res.json({

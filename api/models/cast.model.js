@@ -1,10 +1,10 @@
-class CastModel {
+module.exports = class CastModel {
     id;
     name;
     gender;
     character;
 
-    errors;
+    errors = [];
 
     createFromReq(req) {
         if (!req.params.id) {

@@ -1,10 +1,10 @@
-class MovieModel {
+module.exports = class MovieModel {
     id;
     name;
     genre;
     release_date;
 
-    errors;
+    errors = [];
 
     createFromReq(req) {
         if (!req.params.id) {

@@ -1,9 +1,9 @@
-class DirectorModel {
+module.exports = class DirectorModel {
     id;
     name;
     gender;
 
-    errors;
+    errors = [];
 
     createFromReq(req) {
         if (!req.params.id) {

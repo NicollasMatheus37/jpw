@@ -2,14 +2,14 @@ const db = require("../database/database");
 CastModel = require('../models/cast.model');
 
 exports.get = (req, res) => {
-    let sql = "select * from users"
+    let sql = "select * from casts"
     let params = []
 
     db.all(sql, params, (err, rows) => {
         if (err) {
             return res.status(500).json({
                 "code": 500,
-                "error": res.message
+                "error": err
             })
         }
         res.json({
@@ -21,14 +21,14 @@ exports.get = (req, res) => {
 };
 
 exports.find = (req, res) => {
-    let sql = "select * from users where id = ?";
+    let sql = "select * from casts where id = ?";
     let params = [req.params.id];
 
     db.get(sql, params, (err, row) => {
         if (err) {
             return res.status(500).json({
                 "code": 500,
-                "error": res.message
+                "error": err
             })
         }
         res.json({
@@ -40,68 +40,68 @@ exports.find = (req, res) => {
 }
 
 exports.post = (req, res) => {
-    let userModel = (new CastModel()).createFromReq(req);
+    let model = (new CastModel()).createFromReq(req);
 
-    if (userModel.errors?.length) {
-        return res.status(500).json({ "error": errors.join(",") });
+    if (model.errors?.length) {
+        return res.status(500).json({ "error": model.errors.join(",") });
     }
 
-    const sql = 'INSERT INTO users (name, gender, character) VALUES (?,?,?)';
+    const sql = 'INSERT INTO casts (name, gender, character) VALUES (?,?,?)';
 
-    db.run(sql, userModel.prepareToSave(), (err, result) => {
+    db.run(sql, model.prepareToSave(), (err, result) => {
         if (err) {
             return res.status(500).json({
                 "code": 500,
-                "error": res.message
+                "error": err
             })
         }
 
         res.json({
             "code": 200,
             "message": "success",
-            "data": data,
+            "data": result,
             "id": this.lastID
         });
     });
 };
 
 exports.update = (req, res) => {
-    let userModel = (new CastModel()).createFromReq(req);
+    let model = (new CastModel()).createFromReq(req);
 
-    if (userModel.errors?.length) {
-        return res.status(500).json({ "error": errors.join(",") });
+    if (model.errors?.length) {
+        return res.status(500).json({ "error": model.errors.join(",") });
     }
 
-    const sql = `UPDATE users set
+    const sql = `UPDATE casts set
     name = COALESCE(?,name),
     gender = COALESCE(?,gender),
     character = COALESCE(?,character)
     WHERE id = ?`;
 
-    db.run(sql, userModel.prepareToSave(), (err, result) => {
+    db.run(sql, model.prepareToSave(), (err, result) => {
         if (err) {
             return res.status(500).json({
                 "code": 500,
-                "error": res.message
+                "error": err
             })
         }
         res.json({
             "code": 200,
             message: "success",
-            data: data,
+            data: result,
             changes: this.changes
         })
     });
 };
 
 exports.delete = (req, res) => {
-    const sql = 'DELETE FROM users WHERE id = ?';
+    const sql = 'DELETE FROM casts WHERE id = ?';
 
     db.run(sql, req.params.id, (err, result) => {
         if (err) {
             return res.status(500).json({
                 "code": 500,
-                "error": res.message
+                "error": err
             })
         }
         res.json({

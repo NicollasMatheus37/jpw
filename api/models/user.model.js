@@ -1,10 +1,11 @@
-class UserModel {
+const md5 = require("md5");
+module.exports = class UserModel {
     id;
     name;
     email;
     password;
 
-    errors;
+    errors = [];
 
     createFromReq(req) {
         if (!req.params.id) {
